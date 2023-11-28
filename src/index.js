@@ -5,8 +5,11 @@ import connectDB from "./db/db.js";
 const PORT = process.env.PORT || 5000;
 
 dotenv.config({
-    path: './.env'
+    path: './env'
 })
+
+
+
 connectDB().then(() => {
     app.listen(PORT, () => {
         console.log(`⚙ Server Running : http://localhost:${PORT}`)
