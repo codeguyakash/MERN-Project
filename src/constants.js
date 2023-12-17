@@ -1,1 +1,1 @@
-export const DB_NAME = "akash_database"
+export const DB_NAME = "youtubeCloneDataBase"
