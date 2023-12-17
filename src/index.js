@@ -9,6 +9,14 @@ dotenv.config({
 })
 
 
+app.get('/', (req, res) => {
+    res.status(201).json([
+        {
+            projectName: "Youtube Clone Backend",
+            greet: "Happy Hacking!"
+        }
+    ])
+})
 
 connectDB().then(() => {
     app.listen(PORT, () => {
