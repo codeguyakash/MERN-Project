@@ -20,7 +20,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
 const registerUser = asyncHandler(async (req, res) => {
 
     const { fullName, email, username, password } = req.body;
-    console.log("console.log", fullName, email, username, password)
+    // console.log("console.log", fullName, email, username, password)
 
     if (
         [fullName, email, password, username].some((field) =>
@@ -74,11 +74,11 @@ const registerUser = asyncHandler(async (req, res) => {
 })
 
 const loginUser = asyncHandler(async (req, res) => {
-    const { email, username, password } = req.body
-    console.log(email, username, password)
-    if (!username || !email) {
+    const { email, username, password } = req.body;
+    // return console.log(email, username, password)s
+    if (!(email || username)) {
         throw new ApiError(400, "username or email is required")
-    }
+    }   
     const user = await User.findOne({
         $or: [{ username }, { email }]
     })
