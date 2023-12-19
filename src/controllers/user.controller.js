@@ -152,5 +152,59 @@ const changeCurrentUserPassword = asyncHandler(async (req, res) => {
     return res.status(200)
         .json(new ApiResponse(200, {}, "Password Changed Success"))
 })
+const getCurrentUser = asyncHandler(async (req, res) => {
+    return res.status(200).json(200, req.user, "Current User Fetch Success")
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken }
+})
+const updateAccountDetails = asyncHandler(async (req, res) => {
+    const { fullName, username } = req.body;
+    if (!(fullName || username)) {
+        throw new ApiError(400, "Fields are required")
+    }
+    const user = await User.findByIdAndUpdate(req.user?._id, {
+        $set: {
+            fullName: fullName,
+            username: username
+        }
+    }, { new: true }).select("-password")
+    return res.status(200).json(new ApiResponse(200, user, "Updated Success!"))
+
+
+
+
+})
+const updateAvatar = asyncHandler(async (req, res) => {
+    const avatarLocalPath = req.file?.path;
+    if (!avatarLocalPath) {
+        throw new ApiError(400, "Avatar Required")
+    }
+    const avatar = await uploadOnCloud(avatarLocalPath);
+    if (!avatar.url) {
+        throw new ApiError(400, "Error While file Uploading")
+    }
+    const user = await User.findByIdAndUpdate(req.user?._id, {
+        $set: {
+            avatar: avatar.url
+        }
+    }, { new: true }).select("-password")
+    return res.status(200).json(new ApiResponse(200, user, "Avatar Updated Success!"))
+
+
+})
+const updateCoverImage = asyncHandler(async (req, res) => {
+    const coverImageLocalPath = req.file?.path;
+    if (!coverImageLocalPath) {
+        throw new ApiError(400, "Avatar Required")
+    }
+    const coverImage = await uploadOnCloud(avatarLocalPath);
+    if (!coverImage.url) {
+        throw new ApiError(400, "Error While file Uploading")
+    }
+    const user = await User.findByIdAndUpdate(req.user?._id, {
+        $set: {
+            avatar: coverImage.url
+        }
+    }, { new: true }).select("-password")
+    return res.status(200).json(new ApiResponse(200, user, "Cover Image Updated Success!"))
+})
+export { registerUser, loginUser, logoutUser, refreshAccessToken, changeCurrentUserPassword, getCurrentUser, updateAccountDetails, updateAvatar, updateCoverImage }
