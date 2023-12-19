@@ -17,7 +17,6 @@ const generateAccessAndRefreshTokens = async (userId) => {
         throw new ApiError(500, "Something went Wrong while generating token")
     }
 }
-
 const registerUser = asyncHandler(async (req, res) => {
 
     const { fullName, email, username, password } = req.body;
@@ -73,7 +72,6 @@ const registerUser = asyncHandler(async (req, res) => {
     )
 
 })
-
 const loginUser = asyncHandler(async (req, res) => {
     const { email, username, password } = req.body;
     // return console.log(email, username, password)s
