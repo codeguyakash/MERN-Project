@@ -194,9 +194,22 @@ const changeCurrentUserPassword = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, {}, "Password Changed Success"));
 });
+
 const getCurrentUser = asyncHandler(async (req, res) => {
-  return res.status(200).json(200, req.user, "Current User Fetch Success");
+  const token = req.cookies["accessToken"];
+  console.log(token);
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const userId = decoded._id;
+  const user = await User.findById(userId).select("-password -refreshToken");
+  console.log(user);
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Current User Fetch Success"));
 });
+
 const updateAccountDetails = asyncHandler(async (req, res) => {
   const { fullName, username } = req.body;
   if (!(fullName || username)) {
