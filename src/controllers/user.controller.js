@@ -204,7 +204,6 @@ const getCurrentUser = asyncHandler(async (req, res) => {
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   const userId = decoded._id;
   const user = await User.findById(userId).select("-password -refreshToken");
-  console.log(user);
   return res
     .status(200)
     .json(new ApiResponse(200, user, "Current User Fetch Success"));
